@@ -1,0 +1,12 @@
+MySQL Server - 5.7
+https://linuxize.com/post/how-to-install-mysql-on-debian-10/
+Installed MySQL APT repository  - http://repo.mysql.com/mysql-apt-config_0.8.13-1_all.deb
+Installed libmecab with repo: http://lampcoder.com/59/install-mysql-5-6/
+mysql_secure_installation
+MySQL users:
+root:P@ssw0rd - All privileges 
+zencart:P@ssw0rd - GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, ALTER, INDEX, DROP ON zencart.* TO ‘zencart’@’172.16.10.2’;
+
+Security
+
+
