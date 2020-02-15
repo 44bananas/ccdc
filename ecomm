@@ -1,0 +1,54 @@
+Zencart
+Installed mysql 8.0 - sudo yum install mysql
+Installed php 7.2 w/plugins - https://www.tecmint.com/install-php-7-in-centos-6/
+Install apache aka httpd - sudo yum install httpd
+Started httpd service and enabled
+**Disabled SELinux - sudo setenforce 0
+Zencart setup: https://docs.zen-cart.com/user/first_steps/how_do_i_install/
+
+mysql -h 172.16.240.2 -u 'zencart' to connect to the debian mysql from centos box
+
+Renamed:
+/includes/dist-configure.php to /includes/configure.php
+/admin/includes/dist-configure.php to /admin/includes/configure.php
+
+Permissions:
+chown zencart files to apache:apache or 
+777 /includes/configure.php
+777 /admin/includes/configure.php
+-R 777 /var/www/html/zencart/logs
+-R 777 /var/www/html/zencart/cache
+-R 777 /var/www/html/zencart/images
+-R 777 /var/www/html/zencart/pub
+-R 777 /var/www/html/zencart/admin/backups
+-R 777 /var/www/html/zencart/media
+-R 777 /var/www/html/zencart/includes/languages/english/html_includes
+
+Zencart superuser:
+root
+P@ssw0rd
+
+Security
+iptables -I INPUT 5 -i eth0 -p tcp --dport 80 -m state --state NEW,ESTABLISHED -j ACCEPT
+
+
+SSL Certificate:
+https://www.rosehosting.com/blog/how-to-generate-a-self-signed-ssl-certificate-on-linux/
+Make keypair:
+openssl genrsa -des3 -passout pass:P@ssw0rd -out keypair.key 2048
+sudo mkdir /etc/httpd/httpscertificate
+Extract Private Key:
+openssl rsa -passin pass:P@ssw0rd -in keypair.key -out /etc/httpd/httpscertificate/zencart.key
+Create CSR File - Password: P@ssw0rd
+openssl req -new -key /etc/httpd/httpscertificate/zencart.key -out /etc/httpd/httpscertificate/zencart.csr
+Create CRT file:
+openssl x509 -req -days 365 -in /etc/httpd/httpscertificate/zencart.csr -signkey /etc/httpd/httpscertificate/zencart.key -out /etc/httpd/httpscertificate/zencart.crt
+
+yum install mod_ssl
+Edit config:
+sudo nano /etc/httpd/conf.d/ssl.conf
+
+
+
+
+
